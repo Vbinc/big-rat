@@ -19,9 +19,9 @@
             [ "1", "1000" ]
         ]
     },
-    "1708": { # timestamp
+    "1708": {
         "asks": [
-            [ "3", "950" ],     # price, volume
+            [ "3", "950" ],
         ],
         "bids": [
             [ "1", "1100" ]
@@ -34,17 +34,17 @@
 {
     "s": 1706,
     "+618": {                   # start + 618
-        "b": "2",
-        "o": [
-            [ "+1", "1000" ]     # N - base + 1
-            [ "-1", "1000" ]     # N - base - 1
+        "b": "2",               # current base, which will be used for calculation
+        "o": [                  # orders
+            [ "+1", "1000" ]    # N - base + 1
+            [ "-1", "1000" ]    # N - base - 1
         ]
     },
-    "+312": {                   # start + 618 + 312
-        "b": "2",
+    "+312": {
+        "b": "0",
         "o": [
-            [ "+1", "-50" ]      # N - base + 1; X = pervious amount - current amount
-            [ "-1", "+100" ]     # N - base - 1; X = pervious amount + current amount 
+            [ "+1", "-50" ]
+            [ "-1", "+100" ]
         ]
     }
 }
