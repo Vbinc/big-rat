@@ -33,18 +33,18 @@
 ```json
 {
     "s": 1706,
-    "+618": {                   # start + 618
+    "+1": {                     # start + 618
         "b": "2",               # current base, which will be used for calculation
         "o": [                  # orders
             [ "+1", "1000" ]    # N - base + 1
             [ "-1", "1000" ]    # N - base - 1
         ]
-    },
-    "+312": {
+    },                          # write only changes
+    "+1": {
         "b": "0",
         "o": [
-            [ "+1", "-50" ]
-            [ "-1", "+100" ]
+            [ "0", "-50" ]
+            [ "0", "+100" ]
         ]
     }
 }
