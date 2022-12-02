@@ -1,4 +1,4 @@
-class Coin:
+class coin:
     """
     A class to represent a coin with tiker and name.
 

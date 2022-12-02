@@ -1,10 +1,10 @@
-from coin import Coin
+from coin import coin
 
-class Pair:
+class trade_pair:
     """
-    Pair of coins.
+    pair of coins.
     """
-    def __init__(self, coin_a: Coin, coin_b: Coin):
+    def __init__(self, coin_a: coin, coin_b: coin):
         """
         Create a new pair of coins.
         """
