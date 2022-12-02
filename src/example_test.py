@@ -1,19 +1,27 @@
+import pytest
+from coin import coin
 from indicators import indicator
-import pytest  
 
-def setup_module(module):
-    #init_something()
-    pass
+from pair import trade_pair
 
-def teardown_module(module):
-    #teardown_something()
-    pass
 
-def test_upper():
-    assert 'foo'.upper() == 'FOO'
-    
-def test_isupper():
-    assert 'FOO'.isupper()
+def test_indicator():
+    indicator1 = indicator("test", trade_pair(coin_a=coin(
+        "BTC", "Bitcoin"), coin_b=coin("USDT", "Tether USD")), 1, 1)
+    indicator1.set_value(2)
+    assert indicator1.get_value() == 2
 
-# def test_failed_upper():
-#     assert 'foo'.upper() == 'FOo'
+
+def test_indicator2():
+    indicator1 = indicator("test", trade_pair(coin_a=coin(
+        "BTC", "Bitcoin"), coin_b=coin("USDT", "Tether USD")), 1)
+    indicator1.set_time_unix(2)
+    assert indicator1.get_time_unix() == 2
+
+
+def test_indicator3():
+    indicator1 = indicator("test", trade_pair(coin_a=coin(
+        "BTC", "Bitcoin"), coin_b=coin("USDT", "Tether USD")), 1)
+    indicator1.set_indicator(2, 2)
+    assert indicator1.get_value() == 2
+    assert indicator1.get_time_unix() == 2
