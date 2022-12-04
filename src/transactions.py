@@ -57,16 +57,3 @@ class transaction:
             with open(file_name, 'w') as file:
                 file.write(ret_object)
                 file.write('\n')
-
-# test
-if __name__ == "__main__":
-    # create a transaction
-    _transaction = transaction("test")
-    # create a transaction value
-    transaction_value1 = transaction_value(0, 0, 0, 0)
-    transaction_value2 = transaction_value(0, 0, 0, 0)
-    # add the transaction value to the transaction
-    _transaction.add_value(transaction_value1)
-    _transaction.add_value(transaction_value2)
-    # write the transaction to a file
-    _transaction.write()
