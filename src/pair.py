@@ -1,12 +1,42 @@
-from coin import coin
+from coin import Coin
 
-class trade_pair:
+class TradePair:
     """
     pair of coins.
     """
-    def __init__(self, coin_a: coin, coin_b: coin):
+    def __init__(self, coin_a: Coin, coin_b: Coin) -> None:
         """
         Create a new pair of coins.
+
+        Parameters
+        ----------
+        coin_a : Coin
+            The first coin in the pair.
+        coin_b : Coin
+            The second coin in the pair.
+
+        Examples
+        --------
+        >>> pair = TradePair(Coin("BTC", "Bitcoin"), Coin("USDT", "Tether USD"))
+        >>> print(pair)
+        BTC_USDT
         """
         self.coin_a = coin_a
         self.coin_b = coin_b
+
+    def __str__(self) -> str:
+        """
+        Return the string representation of the pair of coins.
+
+        Returns
+        -------
+        str
+            The string representation of the pair of coins. 
+
+        Examples
+        --------
+        >>> pair = TradePair(Coin("BTC", "Bitcoin"), Coin("USDT", "Tether USD"))
+        >>> print(pair)
+        BTC_USDT
+        """
+        return self.coin_a.ticker + "_" + self.coin_b.ticker

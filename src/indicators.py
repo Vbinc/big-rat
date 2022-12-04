@@ -6,7 +6,7 @@ import json
 import time
 import zlib
 import base64
-from coin import coin
+from coin import Coin
 from pair import trade_pair
 
 class indicator:
@@ -18,15 +18,15 @@ class indicator:
         time (int): The UNIX time of the indicator
     """
     name = ""                                                   # name of the indicator
-    pair: trade_pair = trade_pair(coin(None, None), coin(None, None))       # pair of the indicator
+    pair: trade_pair = trade_pair(Coin(None, None), Coin(None, None))       # pair of the indicator
     value: int = 0                                              # value of the indicator
     time_unix = 0                                               # time of the indicator
     
     def __init__(self, 
             name, 
             pair=trade_pair(
-                coin_a=coin("BTC", "Bitcoin"), 
-                coin_b=coin("USDT", "Tether USD")), 
+                coin_a=Coin("BTC", "Bitcoin"), 
+                coin_b=Coin("USDT", "Tether USD")), 
             value=0, 
             time_unix=0, 
             save=False):
