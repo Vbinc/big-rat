@@ -1,9 +1,9 @@
+from src.coin import Coin
+from src.pair import TradePair
 import base64
 import time
 import zlib
 import jsons
-from coin import Coin
-from pair import TradePair
 
 class OrderBook:
     """
@@ -13,7 +13,7 @@ class OrderBook:
     asks: dict = {}
     bids: dict = {}
 
-    def __init__(self, pair: TradePair):
+    def __init__(self, pair: TradePair) -> None:
         """
         Create a new order book for a pair of coins.
         """

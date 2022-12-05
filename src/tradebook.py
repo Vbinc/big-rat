@@ -1,7 +1,7 @@
 import jsons
-from interest import Interest
-from potential import Potential
-from position import Position
+from src.interest import Interest
+from src.potential import Potential
+from src.position import Position
 
 
 class Trade:

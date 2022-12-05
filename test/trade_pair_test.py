@@ -1,10 +1,10 @@
 import pytest
-from coin import Coin
-from indicators import indicator
-from pair import trade_pair
+from src.coin import Coin
+from src.indicators import Indicator
+from src.pair import TradePair
 
 def test_indicator():
-    indicator1 = indicator("test", trade_pair(
+    indicator1 = Indicator("test", TradePair(
         coin_a=Coin("BTC", "Bitcoin"), 
         coin_b=Coin("USDT", "Tether USD")), 
         1, 1)
@@ -13,7 +13,7 @@ def test_indicator():
 
 
 def test_indicator2():
-    indicator1 = indicator("test", trade_pair(
+    indicator1 = Indicator("test", TradePair(
         coin_a=Coin("BTC", "Bitcoin"), 
         coin_b=Coin("USDT", "Tether USD")), 
         1)
@@ -22,7 +22,7 @@ def test_indicator2():
 
 
 def test_indicator3():
-    indicator1 = indicator("test", trade_pair(
+    indicator1 = Indicator("test", TradePair(
         coin_a=Coin("BTC", "Bitcoin"), 
         coin_b=Coin("USDT", "Tether USD")), 
         1)

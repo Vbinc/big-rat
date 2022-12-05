@@ -1,9 +1,20 @@
-from coin import Coin
+from src.coin import Coin
 
 class TradePair:
     """
-    pair of coins.
+    TradePair is a pair of coins. It is used to represent a pair of coins in a trade.
+    
+    Attributes
+    ----------
+    coin_a : Coin
+        The first coin in the pair.
+    coin_b : Coin
+        The second coin in the pair.
     """
+    
+    coin_a: Coin = Coin("BTC", "Bitcoin")
+    coin_b: Coin = Coin("USDT", "Tether USD")
+    
     def __init__(self, coin_a: Coin, coin_b: Coin) -> None:
         """
         Create a new pair of coins.

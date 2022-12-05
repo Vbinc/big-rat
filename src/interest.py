@@ -4,34 +4,34 @@ import jsons
 
 class Interest:
     """
-    interest - is a class that contains start and and, with UNIX timestamp
-    and functions to set and get the values, also function to write them to file
-    with zlib compression and base64 encoding, 
-    compression and encoding in write function should be optional via parameter
+    Interest - is a class that contains start and end, with UNIX timestamp
+    and function to write them to file with zlib compression and 
+    base64 encoding, compression and encoding are optional
     """
 
-    start = 0
-    end = 0
-    _time: str = ""
+    start: int = 0
+    """Start of the interest in UNIX timestamp"""
+    end: int = 0
+    """End of the interest in UNIX timestamp"""
 
-    def __init__(self, start=0, end=0):
+    def __init__(self, start: int = 0, end: int = 0):
         self.start = start
         self.end = end
-        self._time = str(int(time.time()))
+        self._time = int(time.time())
 
-    def set_start(self, start):
+    def set_start(self, start: int):
         self.start = start
 
-    def set_end(self, end):
+    def set_end(self, end: int):
         self.end = end
 
-    def get_start(self):
+    def get_start(self) -> int:
         return self.start
 
-    def get_end(self):
+    def get_end(self) -> int:
         return self.end
 
-    def json(self):
+    def json(self) -> str:
         """
         write - writes the start and end to file with optional compression and encoding
         """

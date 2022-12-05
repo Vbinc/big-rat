@@ -1,9 +1,9 @@
 import jsons
-from direction import Direction
+from src.direction import Direction
 
 class Position:
     """
-    trade - is a class that represent long/short position, that contains start and and, with UNIX timestamp
+    Position - is a class that represent long/short position, that contains start and and, with UNIX timestamp
     and functions to set and get the values, also function to write them to file
     """
     direction: Direction = Direction.LONG

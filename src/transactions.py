@@ -1,40 +1,61 @@
+from src.transaction_values import TransactionValue
 import time
-from transaction_values import transaction_value
 import zlib
 import base64
 import jsons
-import json
 
-class transaction:
-    source = ""
-    values = []
 
-    def __init__(self, source):
+class Transaction:
+    """
+    ### Transaction - is a class that represents a transactions book from any exchange like binance.
+    --------
+    Methods
+    * `add_value` - adds a value to the values list
+    * `add_values` - adds a list of values to the values list
+    * `write` - writes the values to file with optional compression and encoding
+    """
+    source: str = ""
+    values: list[TransactionValue] = []
+
+    def __init__(self, source) -> None:
         self.source = source
 
-    def add_value(self, value: transaction_value):
+    def add_value(self, value: TransactionValue) -> None:
         self.values.append(value)
 
-    def add_values(self, values: list):
-        for value in values:
-            self.values.append(value)
-
-    def write(self, file_name=source + str(int(time.time())) + ".indicator", use_compression=True, use_base64=True):
+    def add_values(self, values: list[TransactionValue]) -> None:
         """
-        Write the indicator to a file, with compression via zlib and encoding with base64.
+        ### Add a list of trades to values.
+        
+        ----------
+        #### Parameters
+        values : `list[TransactionValue]`
+            The list of trades to add.
         """
-        # make indicator into a serialable object
-        object_dict = { transaction: self }
-        # convert to JSON string
-        json_object = json.dumps(object_dict, skipkeys=True)
-        # conver to bytes
-        json_bytes = json_object.encode('utf-8')
+        self.values.extend(values)
 
-        ret_object = json_bytes
+    def write(self, file_name: str = source + ".tradebook", use_compression: bool = True, use_base64: bool = True) -> None:
+        """
+        ### Write the indicator to a file, with compression via zlib and encoding with base64.
+        
+        #### Parameters
+        ----------
+        * file_name : `str`
+            The name of the file to write to
+        
+        * use_compression : `bool`
+            Whether or not to use zlib compression
+            
+        * use_base64 : `bool`
+            Whether or not to use base64 encoding
+        """
+        # convert to JSON string bytes
+        json_string = jsons.dumps(self, skipkeys=True)
+
         # compress JSON string via zlib
-        if (use_compression & use_base64): 
+        if (use_compression & use_base64):
             # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
+            ret_object = zlib.compress(json_string.encode('utf-8'))
             # encode compressed JSON string via base64
             ret_object = base64.b64encode(ret_object).decode('utf-8')
             # append the string to the file
@@ -44,7 +65,7 @@ class transaction:
 
         elif (use_compression):
             # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
+            ret_object = zlib.compress(json_string.encode('utf-8'))
             # append compressed JSON string to file
             with open(file_name, 'wb') as file:
                 file.write(ret_object)
@@ -52,8 +73,15 @@ class transaction:
 
         elif (use_base64):
             # encode JSON string with base64
-            ret_object = base64.b64encode(json_bytes).decode('utf-8')
+            ret_object = base64.b64encode(
+                json_string.encode('utf-8')).decode('utf-8')
             # append encoded JSON string to file
             with open(file_name, 'w') as file:
                 file.write(ret_object)
+                file.write('\n')
+
+        else:
+            # append JSON string to file
+            with open(file_name, 'w') as file:
+                file.write(json_string)
                 file.write('\n')

@@ -4,7 +4,7 @@ import jsons
 
 class Potential:
     """
-    potential - is a class that contains start and and, with UNIX timestamp
+    Potential - is a class that contains start and and, with UNIX timestamp
     and functions to set and get the values, also function to write them to file
     with zlib compression and base64 encoding, 
     compression and encoding in write function should be optional via parameter
