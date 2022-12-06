@@ -1,5 +1,5 @@
-import jsons
 from src.direction import Direction
+import jsons
 
 class Position:
     """
@@ -7,12 +7,12 @@ class Position:
     and functions to set and get the values, also function to write them to file
     """
     direction: Direction = Direction.LONG
-    start = 0
-    stop = 0
-    start_price = 0
-    stop_price = 0
+    start: int = 0
+    stop: int = 0
+    start_price: int = 0
+    stop_price: int = 0
 
-    def __init__(self, direction=Direction.LONG, start=0, stop=0, start_price=0, stop_price=0):
+    def __init__(self, direction=Direction.LONG, start: int = 0, stop: int = 0, start_price: int = 0, stop_price: int = 0):
         self.direction = direction
         self.start = start
         self.stop = stop
@@ -34,7 +34,7 @@ class Position:
     def get_stop_price(self):
         return self.stop_price
 
-    def setTrade(self, direction: Direction = direction, start=start, stop=stop, start_price=start_price, stop_price=stop_price):
+    def setTrade(self, direction: Direction = direction, start: int = 0, stop: int = 0, start_price: int = 0, stop_price: int = 0):
         """
         setTrade - sets the trade values
 

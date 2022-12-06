@@ -17,7 +17,6 @@ class Interest:
     def __init__(self, start: int = 0, end: int = 0):
         self.start = start
         self.end = end
-        self._time = int(time.time())
 
     def set_start(self, start: int):
         self.start = start

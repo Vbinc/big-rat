@@ -4,79 +4,71 @@ import base64
 import time
 import zlib
 import jsons
+from typing import Union
+
 
 class OrderBook:
     """
     Order book for a pair of coins.
     """
-    pair = TradePair(Coin("BTC", "Bitcoin"), Coin("USDT", "Tether USD"))
-    asks: dict = {}
-    bids: dict = {}
 
     def __init__(self, pair: TradePair) -> None:
         """
         Create a new order book for a pair of coins.
         """
         self.pair = pair
-        self.asks: dict = {}
-        self.bids: dict = {}
+        self.asks: dict[int, float] = {}
+        self.bids: dict[int, float] = {}
 
-    def set_asks(self, asks: dict):
+    def set_asks(self, asks: dict[int, float]) -> None:
         """
         Set the asks for the order book.
         """
         self.asks = asks
 
-    def set_bids(self, bids: dict):
+    def set_bids(self, bids: dict[int, float]) -> None:
         """
         Set the bids for the order book.
         """
         self.bids = bids
 
-    def set_order_book(self, asks: dict, bids: dict):
+    def set_order_book(self, asks: dict[int, float], bids: dict[int, float]) -> None:
         """
         Set the asks and bids for the order book.
         """
         self.asks = asks
         self.bids = bids
 
-    def write(self, file_name=pair.__str__() + str(int(time.time())) + ".orderbook", use_compression=True, use_base64=True):
-        """
-        Write the order book to a file, with compression via zlib and encoding with base64.
-        """
-        # make order book into a serialable object
-        object_dict = { OrderBook: self }
+    def write(self, file_name=None, use_compression=True, use_base64=True) -> Union[str, bytes]:
+        
+        if file_name is None:
+            file_name = self.pair.__str__() + str(int(time.time())) + ".orderbook"
+        
         # convert to JSON string
-        json_object = jsons.dumps(object_dict, skipkeys=True)
-        # conver to bytes
-        json_bytes = json_object.encode('utf-8')
+        json_bytes = jsons.dumps(self, skipkeys=True).encode('utf-8')
 
-        ret_object = json_bytes
-        # compress JSON string via zlib
-        if (use_compression & use_base64): 
-            # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
-            # encode compressed JSON string via base64
-            ret_object = base64.b64encode(ret_object).decode('utf-8')
-            # append the string to the file
+        # compress and/or encode the bytes
+        if use_compression and use_base64:
+            # compress and encode the bytes
+            json_bytes = zlib.compress(json_bytes)
+            json_bytes = base64.b64encode(json_bytes).decode('utf-8')
+        elif use_compression:
+            # compress the bytes
+            json_bytes = zlib.compress(json_bytes)
+        elif use_base64:
+            # encode the bytes
+            json_bytes = base64.b64encode(json_bytes).decode('utf-8')
+
+        # write the bytes to the file
+        if isinstance(json_bytes, str):
             with open(file_name, "a") as file:
-                file.write(ret_object)
+                file.writelines([json_bytes])
                 file.write('\n')
-
-        elif (use_compression):
-            # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
-            # append compressed JSON string to file
-            with open(file_name, 'wb') as file:
-                file.write(ret_object)
+            return json_bytes
+        elif isinstance(json_bytes, bytes):
+            with open(file_name, "ab") as file:
+                file.write(json_bytes)
                 file.write(b'\n')
+            return json_bytes
 
-        elif (use_base64):
-            # encode JSON string with base64
-            ret_object = base64.b64encode(json_bytes).decode('utf-8')
-            # append encoded JSON string to file
-            with open(file_name, 'w') as file:
-                file.write(ret_object)
-                file.write('\n')
-
-        return ret_object
+        return json_bytes

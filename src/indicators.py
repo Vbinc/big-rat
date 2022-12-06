@@ -1,6 +1,7 @@
-import jsons
+from typing import Union
 from src.coin import Coin
 from src.pair import TradePair
+import jsons
 import time
 import zlib
 import base64
@@ -30,7 +31,7 @@ class Indicator:
     """Pair of the indicator"""
     value: float = 0                                            # value of the indicator
     """Value of the indicator"""
-    time_unix = 0                                               # time of the indicator
+    time_unix: int = 0                                               # time of the indicator
     """Time of the indicator"""
     
     def __init__(self, 
@@ -64,61 +65,55 @@ class Indicator:
             self.write()
 
 
-    def write(self, file_name=name + pair.__str__() + ".indicator", use_compression=True, use_base64=True):
+    def write(self, file_name=name + ".indicator", use_compression=True, use_base64=True) -> Union[str, bytes]:
         """
         ### Write the indicator to a file, with compression via zlib and encoding with base64.
-        
         ----------
         #### Parameters
         * file_name : str
             The name of the file to write to
-            
+
         * use_compression : bool
             Whether or not to use zlib compression
-            
+
         * use_base64 : bool
             Whether or not to use base64 encoding
         """
-        # convert to JSON string
-        json_object = jsons.dumps(self, skipkeys=True)
-        # conver to bytes
-        json_bytes = json_object.encode('utf-8')
+        # convert to JSON string and encode as bytes
+        json_bytes = jsons.dumps(self).encode('utf-8')
 
-        ret_object = json_bytes
-        # compress JSON string via zlib
-        if (use_compression & use_base64): 
-            # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
-            # encode compressed JSON string via base64
-            ret_object = base64.b64encode(ret_object).decode('utf-8')
-            # append the string to the file
+        # compress and/or encode the bytes
+        if use_compression and use_base64:
+            # compress and encode the bytes
+            json_bytes = zlib.compress(json_bytes)
+            json_bytes = base64.b64encode(json_bytes).decode('utf-8')
+        elif use_compression:
+            # compress the bytes
+            json_bytes = zlib.compress(json_bytes)
+        elif use_base64:
+            # encode the bytes
+            json_bytes = base64.b64encode(json_bytes).decode('utf-8')
+        else:
+            json_bytes = json_bytes.decode('utf-8')
+
+        # write the bytes to the file
+        if isinstance(json_bytes, str):
             with open(file_name, "a") as file:
-                file.write(ret_object)
-                file.write('\n')
+                file.writelines([json_bytes])
+        elif isinstance(json_bytes, bytes):
+            with open(file_name, "a+b") as file:
+                file.writelines([json_bytes])
+            print(json_bytes)
 
-        elif (use_compression):
-            # compress JSON string via zlib
-            ret_object = zlib.compress(json_bytes)
-            # append compressed JSON string to file
-            with open(file_name, 'wb') as file:
-                file.write(ret_object)
-                file.write(b'\n')
-
-        elif (use_base64):
-            # encode JSON string with base64
-            ret_object = base64.b64encode(json_bytes).decode('utf-8')
-            # append encoded JSON string to file
-            with open(file_name, 'w') as file:
-                file.write(ret_object)
-                file.write('\n')
-
+        return json_bytes
+    
     def set_value(self, value: float):
         self.value = value
 
     def set_time_unix(self, time_unix: int):
         self.time_unix = time_unix
 
-    def set_indicator(self, value: float, time_unix=time.time()):
+    def set_indicator(self, value: float, time_unix: int = int(time.time())):
         self.value = value
         self.time_unix = time_unix
     

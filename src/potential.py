@@ -10,14 +10,14 @@ class Potential:
     compression and encoding in write function should be optional via parameter
     """
 
-    start = 0
-    end = 0
-    _time: str = ""
+    start: int = 0
+    """Start time of potential in UNIX timestamp"""
+    end: int = 0
+    """End of potential in UNIX timestamp"""
 
     def __init__(self, start=0, end=0):
         self.start = start
         self.end = end
-        self._time = str(int(time.time()))
 
     def set_start(self, start):
         self.start = start
@@ -33,7 +33,7 @@ class Potential:
 
     def json(self):
         """
-        write - writes the start and end to file with optional compression and encoding
+        json - returns the object as JSON string
         """
         # convert to JSON string
         return jsons.dumps(self, skipkeys=True)

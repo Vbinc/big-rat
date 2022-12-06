@@ -2,6 +2,9 @@ import jsons
 from src.interest import Interest
 from src.potential import Potential
 from src.position import Position
+import zlib
+import base64
+from typing import Union
 
 
 class Trade:
@@ -13,10 +16,6 @@ class Trade:
     ------------------
     Write .tradebook
     """
-
-    interest: Interest = Interest()
-    potential: Potential = Potential()
-    position: Position = Position()
 
     def __init__(self, interest=Interest(), potential=Potential(), position=Position()):
         self.interest = interest
@@ -37,7 +36,6 @@ class Trade:
         self.potential = potential
         self.position = position
 
-
     def json(self):
         json = {
             "interest": self.interest.json(),
@@ -46,7 +44,7 @@ class Trade:
         }
         return jsons.dumps(json)
 
-    def write_tradebook(self, filename="tradebook.tradebook", compress=True, base64=True):
+    def write_tradebook(self, filename="tradebook.tradebook", use_compress=True, use_base64=True) -> Union[str, bytes]:
         """
         write_tradebook - writes the tradebook to a file
 
@@ -59,16 +57,25 @@ class Trade:
         base64 : bool
             encode the file in base64
         """
-        if compress:
-            import zlib
-            if base64:
-                import base64
-                with open(filename, "w") as f:
-                    f.write(base64.b64encode(zlib.compress(self.json().encode("utf-8"))).decode("utf-8"))
-            else:
-                with open(filename, "wb") as f:
-                    f.write(zlib.compress(self.json().encode("utf-8")))
-        else:
+        # convert the object to a JSON string
+        json_str = self.json()
+
+        # compress and/or encode the string as needed
+        if use_compress:
+            json_str = zlib.compress(json_str.encode("utf-8"))
+            if use_base64:
+                json_str = base64.b64encode(json_str).decode("utf-8")
+
+        # write the string to the file
+        if isinstance(json_str, str):
             with open(filename, "w") as f:
-                f.write(self.json())
+                f.write(json_str)
+            return json_str
+        elif isinstance(json_str, bytes):
+            with open(filename, "wb") as f:
+                f.write(json_str)
+            return json_str
+        
+        return ""
+
     

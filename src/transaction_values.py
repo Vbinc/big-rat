@@ -1,6 +1,3 @@
-from src.coin import Coin
-from src.pair import TradePair
-
 class TransactionValue: 
     """
     TransactionValue is a class that represents a transaction value from any exchange like binance.
