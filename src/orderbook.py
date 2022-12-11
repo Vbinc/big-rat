@@ -22,10 +22,7 @@ class OrderBook:
         self.bids: dict[int, float] = bids
         self.time = time
 
-    def write(self, file_name=None, use_compression=True, use_base64=True) -> Union[str, bytes]:
-        if file_name is None:
-            file_name = self.pair.__str__() + str(int(time.time())) + ".orderbook"
-
+    def write(self, file_name: str, use_compression=False, use_base64=False) -> Union[str, bytes]:
         # convert to JSON string
         json_bytes = jsons.dumps(self, skipkeys=True).encode('utf-8')
 

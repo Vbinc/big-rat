@@ -46,30 +46,31 @@ class Trade:
 
         self.position = (start, end, isLong)
 
-    def write_tradebook(self, filename="tradebook.tradebook", use_compress=True, use_base64=True) -> Union[str, bytes]:
+    def write(self, filename="tradebook.tradebook", use_compress=True, use_base64=True) -> Union[str, bytes]:
         """
         Write the tradebook to a file.
         """
         # convert to JSON string
-        json_bytes = jsons.dumps(self, skipkeys=True)
-
+        json_str = jsons.dumps(self, skipkeys=True)
+        
         if use_compress:
+            json_str = json_str.encode('utf-8')
             # compress the bytes
-            json_bytes = zlib.compress(json_bytes.encode('utf-8')).decode('utf-8')
+            json_str = zlib.compress(json_str)
         elif use_base64:
+            if (not isinstance(json_str, bytes)):
+                json_str = json_str.encode('utf-8')
             # encode the bytes
-            json_bytes = base64.b64encode(json_bytes.encode()).decode('utf-8')
+            json_str = base64.b64encode(json_str).decode('utf-8')
 
         # write the bytes to the file
-        if isinstance(json_bytes, str):
+        if isinstance(json_str, str):
             with open(filename, "a") as file:
-                file.writelines([json_bytes])
-                file.write('\n')
-            return json_bytes
-        elif isinstance(json_bytes, bytes):
+                file.writelines([json_str])
+            return json_str
+        elif isinstance(json_str, bytes):
             with open(filename, "ab") as file:
-                file.write(json_bytes)
-                file.write(b'\n')
-            return json_bytes
+                file.writelines([json_str])
+            return json_str
 
-        return json_bytes
+        return json_str

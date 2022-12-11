@@ -48,6 +48,7 @@ class Transaction:
 
     def __init__(self, source) -> None:
         self.source = source
+        self.values = []
 
     def add_value(self, value: TransactionValue) -> None:
         self.values.append(value)
@@ -80,8 +81,7 @@ class Transaction:
 
         # write the string to the file
         with open(file_name, 'w' if use_base64 else 'wb') as f:
-            f.write(json_string)
-            f.write('\n' if use_base64 else b'\n')
+            f.writelines([json_string])
 
         # return the resulting string
         return json_string if isinstance(json_string, str) else json_string.decode('utf-8')

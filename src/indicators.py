@@ -9,6 +9,7 @@ class IndicatorData:
     def __init__(self, filename: str):
         self.filename = filename + '.indicator'
 
-    def write(self, name: str, value: float, time: int):
+    def write(self, name: str, value: float, time: int) -> str:
         with open(self.filename, 'a') as f:
             f.write(f"{name}_{value}_{time}\n")
+        return f"{name}_{value}_{time}"
