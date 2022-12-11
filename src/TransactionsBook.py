@@ -1,8 +1,36 @@
-from src.transaction_values import TransactionValue
 import zlib
 import base64
 import jsons
 from typing import Union
+
+class TransactionValue: 
+    """
+    TransactionValue is a class that represents a transaction value from any exchange like binance.
+    """
+    time: int = 0
+    price: float = 0
+    qty: float = 0
+    quote: float = 0
+
+    def __init__(self, time: int, price: float, qty: float, quote: float) -> None:
+        """
+        Create a new TransactionValue object.
+        
+        Parameters
+        ----------
+        time : int
+            The time of the transaction in unix time.
+        price : float
+            The price of the trade.
+        qty : float
+            The quantity of the trade.
+        quote : float
+            The quote of the trade.
+        """
+        self.time = time
+        self.price = price
+        self.qty = qty
+        self.quote = quote
 
 class Transaction:
     """
@@ -12,6 +40,8 @@ class Transaction:
     * `add_value` - adds a value to the values list
     * `add_values` - adds a list of values to the values list
     * `write` - writes the values to file with optional compression and encoding
+    --------
+    Write .transactionsbook
     """
     source: str = ""
     values: list[TransactionValue] = []
@@ -35,7 +65,7 @@ class Transaction:
 
     def write(self, file_name = None, use_compression: bool = True, use_base64: bool = True) -> Union[str, bytes]:
         if file_name is None:
-            file_name = f'{self.source}.tradesbook'
+            file_name = f'{self.source}.transactionsbook'
         
         # convert to JSON string bytes
         json_string = jsons.dumps(self, skipkeys=True).encode('utf-8')

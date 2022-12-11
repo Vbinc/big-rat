@@ -7,7 +7,7 @@ requirements = ["ipython>=6", "nbformat>=4", "nbconvert>=5", "requests>=2"]
 
 setup(
     name="big-rat",
-    version="0.0.1",
+    version="0.0.2",
     author="Talgat The Random",
     author_email="eureq631@gmail.com",
     description="A package to save trading data",

@@ -1,11 +1,7 @@
 import jsons
-from src.interest import Interest
-from src.potential import Potential
-from src.position import Position
 import zlib
 import base64
 from typing import Union
-
 
 class Trade:
     """
@@ -17,65 +13,63 @@ class Trade:
     Write .tradebook
     """
 
-    def __init__(self, interest=Interest(), potential=Potential(), position=Position()):
+    def __init__(self, interest: tuple[int, int] = tuple(), 
+                potential: tuple[int, int] = tuple(), 
+                position: tuple[int, int, bool] = tuple()):
         self.interest = interest
         self.potential = potential
         self.position = position
 
-    def get_interest(self):
-        return self.interest
+    def update_interest(self, start: int = 0, end: int = 0):
+        if start == 0:
+            start = self.interest[0]
+        if end == 0:
+            end = self.interest[1]
 
-    def get_potential(self):
-        return self.potential
+        self.interest = (start, end)
 
-    def get_position(self):
-        return self.position
+    def update_potential(self, start: int = 0, end: int = 0):
+        if start == 0:
+            start = self.potential[0]
+        if end == 0:
+            end = self.potential[1]
 
-    def set_trade(self, interest=Interest(), potential=Potential(), position=Position()):
-        self.interest = interest
-        self.potential = potential
-        self.position = position
+        self.potential = (start, end)
 
-    def json(self):
-        json = {
-            "interest": self.interest.json(),
-            "potential": self.potential.json(),
-            "position": self.position.json()
-        }
-        return jsons.dumps(json)
+    def update_position(self, start: int = 0, end: int = 0, isLong: bool = True):
+        if start == 0:
+            start = self.position[0]
+        if end == 0:
+            end = self.position[1]
+        if isLong is None:
+            isLong = self.position[2]
+
+        self.position = (start, end, isLong)
 
     def write_tradebook(self, filename="tradebook.tradebook", use_compress=True, use_base64=True) -> Union[str, bytes]:
         """
-        write_tradebook - writes the tradebook to a file
-
-        Parameters
-        ----------
-        filename : str
-            filename to write to
-        compress : bool
-            compress the file
-        base64 : bool
-            encode the file in base64
+        Write the tradebook to a file.
         """
-        # convert the object to a JSON string
-        json_str = self.json()
+        # convert to JSON string
+        json_bytes = jsons.dumps(self, skipkeys=True)
 
-        # compress and/or encode the string as needed
         if use_compress:
-            json_str = zlib.compress(json_str.encode("utf-8"))
-            if use_base64:
-                json_str = base64.b64encode(json_str).decode("utf-8")
+            # compress the bytes
+            json_bytes = zlib.compress(json_bytes.encode('utf-8')).decode('utf-8')
+        elif use_base64:
+            # encode the bytes
+            json_bytes = base64.b64encode(json_bytes.encode()).decode('utf-8')
 
-        # write the string to the file
-        if isinstance(json_str, str):
-            with open(filename, "w") as f:
-                f.write(json_str)
-            return json_str
-        elif isinstance(json_str, bytes):
-            with open(filename, "wb") as f:
-                f.write(json_str)
-            return json_str
-        
-        return ""
+        # write the bytes to the file
+        if isinstance(json_bytes, str):
+            with open(filename, "a") as file:
+                file.writelines([json_bytes])
+                file.write('\n')
+            return json_bytes
+        elif isinstance(json_bytes, bytes):
+            with open(filename, "ab") as file:
+                file.write(json_bytes)
+                file.write(b'\n')
+            return json_bytes
 
-    
+        return json_bytes
