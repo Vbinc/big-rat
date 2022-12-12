@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf8") as readme_file:
 
 setup(
     name="big-rat",
-    version="0.0.5",
+    version="0.0.6",
     author="Talgat The Random",
     author_email="eureq631@gmail.com",
     description="A package to save trading data",
