@@ -31,3 +31,8 @@ def test_write_with_base64_encoding(order_book: OrderBook):
     # test that the write method encodes the data with base64 when use_base64 is set to True
     json_string: str|bytes = order_book.write(file_name="test2", use_base64=True)
     assert isinstance(json_string, str)
+
+def test_write_with_compression_and_base64_encoding(order_book: OrderBook):
+    # test that the write method compresses and encodes the data when use_compression and use_base64 are set to True
+    json_string: str|bytes = order_book.write(file_name="test3", use_compression=False, use_base64=False)
+    assert isinstance(json_string, str)

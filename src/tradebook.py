@@ -57,11 +57,15 @@ class Trade:
             json_str = json_str.encode('utf-8')
             # compress the bytes
             json_str = zlib.compress(json_str)
-        elif use_base64:
+        if use_base64:
             if (not isinstance(json_str, bytes)):
                 json_str = json_str.encode('utf-8')
             # encode the bytes
             json_str = base64.b64encode(json_str).decode('utf-8')
+            
+        self.interest = []
+        self.potential = []
+        self.position = []
 
         # write the bytes to the file
         if isinstance(json_str, str):
