@@ -23,8 +23,19 @@ from big-rat.Tradebook import Trade
 from big-rat.TransactionsBook import TransactionValue, Transaction
 ```
 
+## TL;DR:
+|Class Name|Description|
+|:---------|:----------|
+|IndicatorData|	📊 Stores the data of an indicator in a file.|
+|OrderBook|	💰 Creates an order book for a pair of coins.|
+|Trade|	📈 Represents a trade.|
+|TransactionValue|	💱 Represents a transaction value from an exchange.|
+|Transaction|	📚 Represents a transactions book from an exchange.|
+
+## TS;WR:
 You can then use the classes in these modules to work with indicators, order books, trades, and transactions. Here are some examples:
 
+* How to write Indicators using `big-rat`
 ```python
 from Indicators.py import IndicatorData
 
@@ -36,6 +47,8 @@ indicator_data.write('My Indicator', 10.5, 1623231451)
 
 ```
 
+* How to write Orderbook using `big-rat`
+
 ```python
 from Orderbook.py import OrderBook
 
@@ -45,6 +58,7 @@ order_book = OrderBook('my_order_book.orderbook', 'BTC/USDT')
 # Write the order book to a file
 order_book.write('my_order_book.orderbook')
 ```
+* How to write Tradebook using `big-rat`
 
 ```python
 from Tradebook.py import Trade
@@ -60,6 +74,7 @@ trade.update_position(start=500, end=600, isLong=False)
 # Write the trade to a file
 trade.write('my_trade.tradebook')
 ```
+* How to write Transactions using `big-rat`
 
 ```python
 from TransactionsBook.py import TransactionValue, Transaction
