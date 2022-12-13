@@ -42,6 +42,7 @@ class OrderBook:
 
         # write the bytes to the file
         with open(file_name, 'a' if isinstance(json_bytes, str) else 'ab') as f:
-            f.writelines([json_bytes])
+            f.write(json_bytes)
+            f.write('\n' if isinstance(json_bytes, str) else b'\n')
 
         return json_bytes

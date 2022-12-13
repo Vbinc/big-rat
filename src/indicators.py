@@ -39,6 +39,7 @@ class IndicatorData:
             data = base64.b64encode(data if isinstance(data, bytes) else data.encode()).decode()
         
         with open(self.filename, 'a' if isinstance(data, str) else 'ab') as f:
-            f.writelines([data])
+            f.write(data)
+            f.write('\n' if isinstance(data, str) else b'\n')
             
         return data

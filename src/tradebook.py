@@ -68,13 +68,8 @@ class Trade:
         self.position = []
 
         # write the bytes to the file
-        if isinstance(json_str, str):
-            with open(filename, "a") as file:
-                file.writelines([json_str])
-            return json_str
-        elif isinstance(json_str, bytes):
-            with open(filename, "ab") as file:
-                file.writelines([json_str])
-            return json_str
+        with open(filename, 'a' if isinstance(json_str, str) else 'ab') as f:
+            f.write(json_str)
+            f.write('\n' if isinstance(json_str, str) else b'\n')
 
         return json_str

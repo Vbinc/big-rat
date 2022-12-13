@@ -81,7 +81,8 @@ class Transaction:
 
         # write the string to the file
         with open(file_name, 'w' if use_base64 else 'wb') as f:
-            f.writelines([json_string])
+            f.write(json_string)
+            f.write('\n' if isinstance(json_string, str) else b'\n')
             
         self.values = []
 
