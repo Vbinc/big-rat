@@ -11,8 +11,9 @@ class TransactionValue:
     price: float = 0
     qty: float = 0
     quote: float = 0
+    isBuy: bool = True
 
-    def __init__(self, time: int, price: float, qty: float, quote: float) -> None:
+    def __init__(self, time: int, price: float, qty: float, quote: float, isBuy: bool) -> None:
         """
         Create a new TransactionValue object.
         
@@ -31,6 +32,7 @@ class TransactionValue:
         self.price = price
         self.qty = qty
         self.quote = quote
+        self.isBuy = isBuy
 
 class Transaction:
     """
@@ -64,10 +66,10 @@ class Transaction:
         """
         self.values.extend(values)
 
-    def write(self, file_name = None, use_compression: bool = True, use_base64: bool = True) -> Union[str, bytes]:
-        if file_name is None:
-            file_name = f'{self.source}.transactionsbook'
-        
+    def write(self, file_name: str, use_compression: bool = True, use_base64: bool = True) -> Union[str, bytes]:
+        if not file_name.endswith('.transactionsbook'):
+            file_name = f"{file_name}.transactionsbook"
+
         # convert to JSON string bytes
         json_string = jsons.dumps(self, skipkeys=True).encode('utf-8')
 
@@ -83,7 +85,7 @@ class Transaction:
         with open(file_name, 'w' if use_base64 else 'wb') as f:
             f.write(json_string)
             f.write('\n' if isinstance(json_string, str) else b'\n')
-            
+
         self.values = []
 
         # return the resulting string

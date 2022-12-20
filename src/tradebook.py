@@ -46,10 +46,12 @@ class Trade:
 
         self.position = (start, end, isLong)
 
-    def write(self, filename="tradebook.tradebook", use_compress=True, use_base64=True) -> Union[str, bytes]:
+    def write(self, filename: str, use_compress=True, use_base64=True) -> Union[str, bytes]:
         """
         Write the tradebook to a file.
         """
+        if not filename.endswith('.tradebook'):
+            filename += '.tradebook'
         # convert to JSON string
         json_str = jsons.dumps(self, skipkeys=True)
         

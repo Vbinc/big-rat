@@ -33,19 +33,19 @@ def test_update_position(trade: Trade):
 
 def test_write_tradebook(trade: Trade):
     # test that the write_tradebook method returns the expected string
-    assert trade.write(use_compress=False, use_base64=False) == '{"interest": [1, 2], "position": [5, 6, true], "potential": [3, 4]}'
+    assert trade.write(filename="test1", use_compress=False, use_base64=False) == '{"interest": [1, 2], "position": [5, 6, true], "potential": [3, 4]}'
 
 def test_write_tradebook_with_compression(trade: Trade):
     # test that the write_tradebook method compresses the data when use_compress is set to True
-    json_bytes = trade.write(use_compress=True, use_base64=False)
+    json_bytes = trade.write(filename="test1", use_compress=True, use_base64=False)
     assert isinstance(json_bytes, bytes)
 
 def test_write_tradebook_with_base64_encoding(trade: Trade):
     # test that the write_tradebook method encodes the data with base64 when use_base64 is set to True
-    json_string = trade.write(use_compress=False, use_base64=True)
+    json_string = trade.write(filename="test1", use_compress=False, use_base64=True)
     assert isinstance(json_string, str)
     
 def test_write_tradebook_with_compression_and_base64_encoding(trade: Trade):
     # test that the write_tradebook method compresses and encodes the data with base64 when use_compress and use_base64 are set to True
-    json_bytes = trade.write(use_compress=True, use_base64=True)
+    json_bytes = trade.write(filename="test1", use_compress=True, use_base64=True)
     assert isinstance(json_bytes, str)

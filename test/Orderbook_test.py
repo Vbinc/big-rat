@@ -6,7 +6,7 @@ from src.OrderBook import OrderBook
 def order_book():
     return OrderBook('test_order_book')
 
-def test_init(order_book):
+def test_init(order_book: OrderBook):
     # test that the filename attribute is set correctly
     assert order_book.filename == 'test_order_book.orderbook'
 
