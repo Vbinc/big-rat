@@ -5,7 +5,7 @@ with open("README.md", "r", encoding="utf8") as readme_file:
 
 setup(
     name="bigrat",
-    version="1.0.1",
+    version="1.0.3",
     author="Talgat The Random",
     packages=["bigrat"],
     package_dir={"bigrat": "src"},

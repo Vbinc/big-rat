@@ -12,15 +12,27 @@ class OrderBook:
     Write .orderbook
     """
 
-    def __init__(self, filename: str, pair: str = "BTC/USDT", asks: dict[int, float] = {}, bids: dict[int, float] = {}, time: int = 0) -> None:
+    def __init__(self, filename: str) -> None:
         """
         Create a new order book for a pair of coins.
         """
         self.filename = filename + '.orderbook'
-        self.pair = pair
-        self.asks: dict[int, float] = asks
-        self.bids: dict[int, float] = bids
-        self.time = time
+        self.pair: str
+        self.asks: dict[int, float]
+        self.bids: dict[int, float]
+        self.time = 0
+        
+    def add_asks(self, asks: dict[int, float]) -> None:
+        """
+        Add asks to the order book.
+        """
+        self.asks = asks
+        
+    def add_bids(self, bids: dict[int, float]) -> None:
+        """
+        Add bids to the order book.
+        """
+        self.bids = bids
 
     def write(self, file_name: str, use_compression=False, use_base64=False) -> Union[str, bytes]:
         if (not file_name.endswith('.orderbook')):

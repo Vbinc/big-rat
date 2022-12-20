@@ -13,12 +13,10 @@ class Trade:
     Write .tradebook
     """
 
-    def __init__(self, interest: tuple[int, int] = tuple(), 
-                potential: tuple[int, int] = tuple(), 
-                position: tuple[int, int, bool] = tuple()):
-        self.interest = interest
-        self.potential = potential
-        self.position = position
+    def __init__(self):
+        self.interest: tuple[int, int]
+        self.potential: tuple[int, int]
+        self.position: tuple[int, int, bool]
 
     def update_interest(self, start: int = 0, end: int = 0):
         if start == 0:
@@ -46,7 +44,7 @@ class Trade:
 
         self.position = (start, end, isLong)
 
-    def write(self, filename: str, use_compress=True, use_base64=True) -> Union[str, bytes]:
+    def write(self, filename: str, use_compress: bool = True, use_base64: bool = True) -> Union[str, bytes]:
         """
         Write the tradebook to a file.
         """
@@ -59,15 +57,16 @@ class Trade:
             json_str = json_str.encode('utf-8')
             # compress the bytes
             json_str = zlib.compress(json_str)
+            
         if use_base64:
             if (not isinstance(json_str, bytes)):
                 json_str = json_str.encode('utf-8')
             # encode the bytes
             json_str = base64.b64encode(json_str).decode('utf-8')
             
-        self.interest = []
-        self.potential = []
-        self.position = []
+        self.interest = tuple()
+        self.potential = tuple()
+        self.position = tuple()
 
         # write the bytes to the file
         with open(filename, 'a' if isinstance(json_str, str) else 'ab') as f:
